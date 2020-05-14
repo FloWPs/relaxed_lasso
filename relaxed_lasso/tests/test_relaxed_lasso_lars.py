@@ -234,4 +234,4 @@ def test_singular_matrix():
     y1 = np.array([1, 1])
     _, _, coef_path = relasso_lars_path(X1, y1)
     
-    assert_array_almost_equal(coef_path.T[-1,:], [[0, 0], [1, 0]])
+    assert_array_almost_equal(coef_path.T[-1, :], [[0, 0], [1, 0]])
