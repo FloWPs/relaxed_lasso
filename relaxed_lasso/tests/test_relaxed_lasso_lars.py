@@ -154,8 +154,6 @@ def test_shapes(X, y):
             assert relasso.coef_path_.shape == (X.shape[1], len(relasso.alphas_), len(relasso.alphas_) - 1)
         else :
             assert relasso.coef_path_.shape == (X.shape[1], 1, 1)
-        
-    
 
 
 @pytest.mark.parametrize("X, y", [(X, y), (Xa, ya)])
