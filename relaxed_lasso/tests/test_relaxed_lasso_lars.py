@@ -154,8 +154,6 @@ def test_shapes(X, y):
             assert relasso.coef_path_.shape == (X.shape[1], len(relasso.alphas_), len(relasso.alphas_) - 1)
         else :
             assert relasso.coef_path_.shape == (X.shape[1], 1, 1)
-        
-    
 
 
 @pytest.mark.parametrize("X, y", [(X, y), (Xa, ya)])
@@ -236,4 +234,4 @@ def test_singular_matrix():
     y1 = np.array([1, 1])
     _, _, coef_path = relasso_lars_path(X1, y1)
     
-    assert_array_almost_equal(coef_path.T[-1,:], [[0, 0], [1, 0]])
+    assert_array_almost_equal(coef_path.T[-1, :], [[0, 0], [1, 0]])
