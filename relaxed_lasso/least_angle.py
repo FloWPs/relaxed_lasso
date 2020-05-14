@@ -280,8 +280,6 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
                             interpolated = interpolator(alphas[j])
                             new_coefs[:, 1] = interpolated
                         else:
-                            # This condition should never be met
-                            # Keeping warning for debug purposes
                             print("Warning: Sign change detected: \
                                 alpha_var_i {} alpha_reg_i {}".format(i, j))
                             break
