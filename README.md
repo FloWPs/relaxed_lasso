@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.com/Flop-py/relaxed_lasso.svg?branch=dev)](https://travis-ci.com/Flop-py/relaxed_lasso)
+[![Build Status](https://travis-ci.com/Flop-py/relaxed_lasso.svg?branch=readme)](https://travis-ci.com/Flop-py/relaxed_lasso)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Generic badge](https://img.shields.io/badge/Version-0.0.1-orange.svg)](https://shields.io/)
 
 # Relaxed Lasso
 
