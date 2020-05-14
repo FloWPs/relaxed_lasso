@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Flop-py/relaxed_lasso.svg?branch=dev)](https://travis-ci.com/Flop-py/relaxed_lasso)
+
 # Relaxed Lasso
 
 Improved version of classical lasso regularization for linear regression, as
