@@ -7,7 +7,7 @@ from relaxed_lasso import RelaxedLassoLarsCV
 
 
 @pytest.mark.parametrize(
-    "Estimator", [RelaxedLassoLars, RelaxedLassoLarsCV]
+    "Estimator", [RelaxedLassoLars(), RelaxedLassoLarsCV()]
 )
 def test_all_estimators(Estimator):
     return check_estimator(Estimator)
