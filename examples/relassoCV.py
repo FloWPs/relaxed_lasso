@@ -1,6 +1,6 @@
 """
 =====================================
-  RelaxedLassoLars Cross-Validation
+  Cross-Validated RelaxedLassoLars
 =====================================
 An example  of : class relaxed_lasso.RelaxedLassoLarsCV
 """
