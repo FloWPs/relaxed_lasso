@@ -16,6 +16,7 @@ install:
   - "conda create -q -n test-environment python=%PYTHON_VERSION% numpy scipy scikit-learn joblib pandas pytest"
   - activate test-environment
   - pip install sklearn
+  - pip install setuptools>=24.0
 
 test_script:
   - pytest
