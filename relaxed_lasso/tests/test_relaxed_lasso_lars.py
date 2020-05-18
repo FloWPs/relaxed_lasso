@@ -58,7 +58,7 @@ def test_theta_equal_1():
 
 
 def test_theta_equal_0():
-    # Validate that Relaxed asso with theta=1 is equivalent to OLS.
+    # Validate that Relaxed asso with theta=0 is equivalent to OLS.
     relasso = RelaxedLassoLars(alpha, 0).fit(X_train, y_train)
     mask = lasso.active_
     lr = LinearRegression().fit(X_train[:, mask], y_train)
