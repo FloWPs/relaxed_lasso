@@ -5,3 +5,4 @@ scipy
 sklearn
 pandas
 pytest
+py < 1.5.0
