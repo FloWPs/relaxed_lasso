@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; Relaxed Lasso 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Relaxed Lasso’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Relaxed Lasso
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-relaxed-lasso-when-is-it-used">What is relaxed lasso, when is it used ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#relaxed-lasso-concept">Relaxed Lasso concept</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#experiment-results">Experiment results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#example-gallery">Example gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-relaxedlassolars-class">The <code class="docutils literal notranslate"><span class="pre">RelaxedLassoLars</span></code> class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-relaxedlassolarscv-class">The <code class="docutils literal notranslate"><span class="pre">RelaxedLassoLarsCV</span></code> class</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Relaxed Lasso</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/content.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The Relaxed Lasso package is a Python implementation of the improved version of classical lasso regularization
+for linear regression, as per the paper <a class="reference external" href="https://stat.ethz.ch/~nicolai/relaxo.pdf">Relaxed Lasso</a>
+by Nicholas Meinshausen (2007), in the style of scikit-learn.</p>
+<p>For more information about Relaxed Lasso, see below.</p>
+<div class="section" id="what-is-relaxed-lasso-when-is-it-used">
+<h2>What is relaxed lasso, when is it used ?<a class="headerlink" href="#what-is-relaxed-lasso-when-is-it-used" title="Permalink to this headline">¶</a></h2>
+<p>Lasso, and its improvement relaxed lasso, are extensions of linear regressions.
+The main benefits are their ability to deal with colinearity, high dimensions
+(even higher than number of samples) and the fact that they lead to a sparse
+solutions.</p>
+<p>According to Hastie, Tibshirani (2016) in <a class="reference external" href="https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf">Best Subset, Forward Stepwise, or
+Lasso</a>, relaxed lasso is the overall winner when it comes to variables
+selection. Surprisingly up to now there was no python implementation of this
+algorithm, although one exists in R (<a class="reference external" href="https://cran.r-project.org/web/packages/relaxo/index.html">relaxo</a>).</p>
+</div>
+<div class="section" id="relaxed-lasso-concept">
+<h2>Relaxed Lasso concept<a class="headerlink" href="#relaxed-lasso-concept" title="Permalink to this headline">¶</a></h2>
+<p>The key concept is that there are two regularization parameters, alpha which
+controls the variables that will be retained in the model, and theta (value
+between 0 and 1) which acts as a multiplicative factor of alpha to choose the
+amount of regularization applied to the subset of variables.</p>
+<p>Theta = 1 corresponds to standard Lasso
+Theta = 0 corresponds to the ordinary least square solution for the subset of
+variables selected with alpha.</p>
+</div>
+<div class="section" id="experiment-results">
+<h2>Experiment results<a class="headerlink" href="#experiment-results" title="Permalink to this headline">¶</a></h2>
+<p>We generated datasets where the number of predictors is much larger than the number of
+observations as per Wang et al. (2010) in <em>Variable selection via combined penalization
+for high-dimensional data analysis</em>.</p>
+<p>More specifically, the dataset consists of 1000 variables and 50 rows, with high
+colineraity between columns. The colinerarity between columns respectively with
+index <em>i</em> and <em>j</em> is defined by the formula <span class="math notranslate nohighlight">\(0.5^{i-j}\)</span>. For instance two contiguous
+columns have a colinearity of value 0.5</p>
+<p>The output is a linear combination of only 6 variables, with added gaussian noise of
+standard deviation 2.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable number</p></th>
+<th class="head"><p>Coefficient value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>30</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>40</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>50</p></td>
+<td><p>0.2</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here are the results of running lasso and relaxed lasso on 100 such datasets:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 47%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Avg. number of variables retained</p></th>
+<th class="head"><p>Avg. Mean Squared Error</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Lasso</p></td>
+<td><p>23.62</p></td>
+<td><p>9.13</p></td>
+</tr>
+<tr class="row-odd"><td><p>Relaxed Lasso</p></td>
+<td><p>4.08</p></td>
+<td><p>7.11</p></td>
+</tr>
+</tbody>
+</table>
+<p>In such a setting it shows a clear superiority of relaxed lasso which leads to sparser, better fitting model.</p>
+</div>
+</div>
+<div class="section" id="example-gallery">
+<h1>Example gallery<a class="headerlink" href="#example-gallery" title="Permalink to this headline">¶</a></h1>
+<p>An example of the <code class="docutils literal notranslate"><span class="pre">RelaxedLassoLars</span></code> class :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">relaxed_lasso</span> <span class="kn">import</span> <span class="n">RelaxedLassoLars</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">true_coefs</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                                   <span class="n">n_features</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                   <span class="n">n_informative</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                   <span class="n">noise</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
+                                   <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                   <span class="n">coef</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">relasso</span> <span class="o">=</span> <span class="n">RelaxedLassoLars</span><span class="p">()</span>
+<span class="n">relasso</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">relasso</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An example of the <code class="docutils literal notranslate"><span class="pre">RelaxedLassoLarsCV</span></code> class :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">relaxed_lasso</span> <span class="kn">import</span> <span class="n">RelaxedLassoLarsCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">true_coefs</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                   <span class="n">n_features</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                   <span class="n">n_informative</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                                   <span class="n">noise</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>
+                                   <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                   <span class="n">coef</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">relassoCV</span> <span class="o">=</span> <span class="n">RelaxedLassoLarsCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># 5 folds by default</span>
+<span class="n">relassoCV</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R-squared: &quot;</span><span class="p">,</span> <span class="n">relassoCV</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+<span class="c1"># Best parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Alpha: &quot;</span><span class="p">,</span> <span class="n">relassoCV</span><span class="o">.</span><span class="n">alpha_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Theta: &quot;</span><span class="p">,</span> <span class="n">relassoCV</span><span class="o">.</span><span class="n">theta_</span><span class="p">)</span>
+<span class="n">relasso</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-relaxedlassolars-class">
+<h2>The <code class="docutils literal notranslate"><span class="pre">RelaxedLassoLars</span></code> class<a class="headerlink" href="#the-relaxedlassolars-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="relaxed_lasso.RelaxedLassoLars">
+<em class="property">class </em><code class="sig-prename descclassname">relaxed_lasso.</code><code class="sig-name descname">RelaxedLassoLars</code><span class="sig-paren">(</span><em class="sig-param">alpha=1.0</em>, <em class="sig-param">theta=1.0</em>, <em class="sig-param">fit_intercept=True</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">precompute='auto'</em>, <em class="sig-param">max_iter=500</em>, <em class="sig-param">eps=2.220446049250313e-16</em>, <em class="sig-param">copy_X=True</em>, <em class="sig-param">fit_path=True</em><span class="sig-paren">)</span><a class="headerlink" href="#relaxed_lasso.RelaxedLassoLars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.MultiOutputMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.RegressorMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.linear_model._base.LinearModel</span></code></p>
+<p>Relaxed Lasso model fit with Least Angle Regression.</p>
+<p>See reference paper:
+Meinshausen N. (2006): Relaxed Lasso</p>
+<dl class="simple">
+<dt>alpha<span class="classifier">float, default=1.0</span></dt><dd><p>Constant that multiplies the penalty term. Defaults to 1.0.
+Used for variables selection.
+<code class="docutils literal notranslate"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">0</span></code> is equivalent to an ordinary least square, solved
+by <code class="xref py py-class docutils literal notranslate"><span class="pre">LinearRegression</span></code>. For numerical reasons, using
+<code class="docutils literal notranslate"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">0</span></code> with the LassoLars object is not advised and you
+should prefer the LinearRegression object.</p>
+</dd>
+<dt>theta: float, default=1.0</dt><dd><p>Constant that relaxes the regularization parameter alpha.
+Value is between 0 and 1
+<code class="docutils literal notranslate"><span class="pre">theta</span> <span class="pre">=</span> <span class="pre">1</span></code> is equivalent to LassoLars with regularization alpha
+<code class="docutils literal notranslate"><span class="pre">theta</span> <span class="pre">=</span> <span class="pre">0</span></code> is equivalent to an ordinary least square, solved
+by <code class="xref py py-class docutils literal notranslate"><span class="pre">LinearRegression</span></code>, applied to a subset of variables
+that was selected by LassoLars with regularization parameter alpha</p>
+</dd>
+<dt>fit_intercept<span class="classifier">boolean, default=True</span></dt><dd><p>Whether to calculate the intercept for this model. If set
+to false, no intercept will be used in calculations
+(e.g. data is expected to be already centered).</p>
+</dd>
+<dt>verbose<span class="classifier">boolean or integer, optional, default=False</span></dt><dd><p>Sets the verbosity amount</p>
+</dd>
+<dt>normalize<span class="classifier">boolean, optional, default=True</span></dt><dd><p>This parameter is ignored when <code class="docutils literal notranslate"><span class="pre">fit_intercept</span></code> is set to False.
+If True, the regressors X will be normalized before regression by
+subtracting the mean and dividing by the l2-norm.
+If you wish to standardize, please use
+<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code> before calling <code class="docutils literal notranslate"><span class="pre">fit</span></code>
+on an estimator with <code class="docutils literal notranslate"><span class="pre">normalize=False</span></code>.</p>
+</dd>
+<dt>precompute<span class="classifier">bool, ‘auto’ or array-like, default=’auto’</span></dt><dd><p>Whether to use a precomputed Gram matrix to speed up
+calculations. If set to <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> let us decide. The Gram
+matrix can also be passed as argument.</p>
+</dd>
+<dt>eps<span class="classifier">float, optional</span></dt><dd><p>The machine-precision regularization in the computation of the
+Cholesky diagonal factors. Increase this for very ill-conditioned
+systems. Unlike the <code class="docutils literal notranslate"><span class="pre">tol</span></code> parameter in some iterative
+optimization-based algorithms, this parameter does not control
+the tolerance of the optimization.</p>
+</dd>
+<dt>copy_X<span class="classifier">boolean, optional, default=True</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, X will be copied; else, it may be overwritten.</p>
+</dd>
+<dt>fit_path<span class="classifier">boolean, default=True</span></dt><dd><p>If True the full path is stored in the <code class="docutils literal notranslate"><span class="pre">coef_path_</span></code> attribute.
+If you compute the solution for a large problem or many targets,
+setting <code class="docutils literal notranslate"><span class="pre">fit_path</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> will lead to a speedup, especially
+with a small alpha.</p>
+</dd>
+</dl>
+<dl>
+<dt><a href="#id1"><span class="problematic" id="id2">alphas_</span></a><span class="classifier">array, shape (n_alphas + 1,) | list of n_targets such arrays</span></dt><dd><p>Maximum of covariances (in absolute value) at each iteration.
+<code class="docutils literal notranslate"><span class="pre">n_alphas</span></code> is either <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>, <code class="docutils literal notranslate"><span class="pre">n_features</span></code>, or the number of
+nodes in the path with correlation greater than <code class="docutils literal notranslate"><span class="pre">alpha</span></code>, whichever
+is smaller.</p>
+</dd>
+<dt><a href="#id3"><span class="problematic" id="id4">active_</span></a><span class="classifier">list, length = n_alphas | list of n_targets such lists</span></dt><dd><p>Indices of active variables at the end of the path.</p>
+</dd>
+<dt><a href="#id5"><span class="problematic" id="id6">coef_path_</span></a><span class="classifier">array, shape (n_features, n_alphas + 1)</span></dt><dd><div class="line-block">
+<div class="line">list of n_targets such arrays</div>
+</div>
+<p>The varying values of the coefficients along the path. It is not
+present if the <code class="docutils literal notranslate"><span class="pre">fit_path</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+<dt><a href="#id7"><span class="problematic" id="id8">coef_</span></a><span class="classifier">array, shape (n_features,) or (n_targets, n_features)</span></dt><dd><p>Parameter vector (w in the formulation formula).</p>
+</dd>
+<dt><a href="#id9"><span class="problematic" id="id10">intercept_</span></a><span class="classifier">float | array, shape (n_targets,)</span></dt><dd><p>Independent term in decision function.</p>
+</dd>
+<dt><a href="#id11"><span class="problematic" id="id12">n_iter_</span></a><span class="classifier">array-like or int</span></dt><dd><p>The number of iterations taken by lars_path to find the
+grid of alphas for each target.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">relaxed_lasso</span> <span class="kn">import</span> <span class="n">RelaxedLassoLars</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span> <span class="o">=</span> <span class="n">RelaxedLassoLars</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span><span class="o">.</span><span class="n">fit</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">RelaxedLassoLars(alpha=0.01, copy_X=True, eps=2.220446049250313e-16,</span>
+<span class="go">             fit_intercept=True, fit_path=True, max_iter=500,</span>
+<span class="go">             normalize=True, precompute=&#39;auto&#39;, theta=0.5, verbose=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">relasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="go">[ 0.         -0.98162883]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="relaxed_lasso.RelaxedLassoLars.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">Xy=None</em><span class="sig-paren">)</span><a class="headerlink" href="#relaxed_lasso.RelaxedLassoLars.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model using X, y as training data.</p>
+<dl>
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
+</dd>
+<dt>y<span class="classifier">array-like, shape (n_samples,) or (n_samples, n_targets)</span></dt><dd><p>Target values.</p>
+</dd>
+<dt>Xy<span class="classifier">array-like, shape (n_samples,) or (n_samples, n_targets),</span></dt><dd><blockquote>
+<div><p>optional</p>
+</div></blockquote>
+<p>Xy = np.dot(X.T, y) that can be precomputed. It is useful
+only when the Gram matrix is precomputed.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>returns an instance of self.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="relaxed_lasso.RelaxedLassoLars.method">
+<code class="sig-name descname">method</code><em class="property"> = 'lasso'</em><a class="headerlink" href="#relaxed_lasso.RelaxedLassoLars.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="the-relaxedlassolarscv-class">
+<h2>The <code class="docutils literal notranslate"><span class="pre">RelaxedLassoLarsCV</span></code> class<a class="headerlink" href="#the-relaxedlassolarscv-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="relaxed_lasso.RelaxedLassoLarsCV">
+<em class="property">class </em><code class="sig-prename descclassname">relaxed_lasso.</code><code class="sig-name descname">RelaxedLassoLarsCV</code><span class="sig-paren">(</span><em class="sig-param">fit_intercept=True</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">max_iter=500</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">precompute='auto'</em>, <em class="sig-param">cv=None</em>, <em class="sig-param">max_n_alphas=1000</em>, <em class="sig-param">n_jobs=None</em>, <em class="sig-param">eps=2.220446049250313e-16</em>, <em class="sig-param">copy_X=True</em><span class="sig-paren">)</span><a class="headerlink" href="#relaxed_lasso.RelaxedLassoLarsCV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">relaxed_lasso.least_angle.RelaxedLassoLars</span></code></p>
+<p>Cross-validated Relaxed Lasso, using the LARS algorithm.</p>
+<dl>
+<dt>fit_intercept<span class="classifier">boolean</span></dt><dd><p>whether to calculate the intercept for this model. If set
+to false, no intercept will be used in calculations
+(e.g. data is expected to be already centered).</p>
+</dd>
+<dt>verbose<span class="classifier">boolean or integer, optional</span></dt><dd><p>Sets the verbosity amount</p>
+</dd>
+<dt>max_iter<span class="classifier">integer, optional</span></dt><dd><p>Maximum number of iterations to perform.</p>
+</dd>
+<dt>normalize<span class="classifier">boolean, optional, default True</span></dt><dd><p>This parameter is ignored when <code class="docutils literal notranslate"><span class="pre">fit_intercept</span></code> is set to False.
+If True, the regressors X will be normalized before regression by
+subtracting the mean and dividing by the l2-norm.
+If you wish to standardize, please use
+<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code> before calling <code class="docutils literal notranslate"><span class="pre">fit</span></code>
+on an estimator with <code class="docutils literal notranslate"><span class="pre">normalize=False</span></code>.</p>
+</dd>
+<dt>precompute<span class="classifier">True | False | ‘auto’</span></dt><dd><p>Whether to use a precomputed Gram matrix to speed up
+calculations. If set to <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> let us decide. The Gram matrix
+cannot be passed as argument since we will use only subsets of X.</p>
+</dd>
+<dt>cv<span class="classifier">int, cross-validation generator or an iterable, optional</span></dt><dd><p>Determines the cross-validation splitting strategy.
+Possible inputs for cv are:
+- None, to use the default 5-fold cross-validation,
+- integer, to specify the number of folds.
+- <span class="xref std std-term">CV splitter</span>,
+- An iterable yielding (train, test) splits as arrays of indices.</p>
+</dd>
+<dt>max_n_alphas<span class="classifier">integer, optional</span></dt><dd><p>The maximum number of points on the path used to compute the
+residuals in the cross-validation</p>
+</dd>
+<dt>n_jobs<span class="classifier">int or None, optional (default=None)</span></dt><dd><p>Number of CPUs to use during the cross validation.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code> context.
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors. See <span class="xref std std-term">Glossary</span>
+for more details.</p>
+</dd>
+<dt>eps<span class="classifier">float, optional</span></dt><dd><p>The machine-precision regularization in the computation of the
+Cholesky diagonal factors. Increase this for very ill-conditioned
+systems.</p>
+</dd>
+<dt>copy_X<span class="classifier">boolean, optional, default True</span></dt><dd><blockquote>
+<div><p>If True, X will be copied; else, it may be overwritten.</p>
+</div></blockquote>
+<p>Attributes</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt><a href="#id13"><span class="problematic" id="id14">coef_</span></a><span class="classifier">array, shape (n_features,)</span></dt><dd><p>parameter vector (w in the formulation formula)</p>
+</dd>
+<dt><a href="#id15"><span class="problematic" id="id16">intercept_</span></a><span class="classifier">float</span></dt><dd><p>independent term in decision function.</p>
+</dd>
+<dt><a href="#id17"><span class="problematic" id="id18">coef_path_</span></a><span class="classifier">array, shape (n_features, n_alphas)</span></dt><dd><p>the varying values of the coefficients along the path</p>
+</dd>
+<dt><a href="#id19"><span class="problematic" id="id20">alpha_</span></a><span class="classifier">float</span></dt><dd><p>the estimated regularization parameter alpha</p>
+</dd>
+<dt><a href="#id21"><span class="problematic" id="id22">theta_</span></a><span class="classifier">float</span></dt><dd><p>the estimated regularization parameter theta</p>
+</dd>
+<dt><a href="#id23"><span class="problematic" id="id24">alphas_</span></a><span class="classifier">array, shape (n_alphas,)</span></dt><dd><p>the different values of alpha along the path</p>
+</dd>
+<dt><a href="#id25"><span class="problematic" id="id26">cv_alphas_</span></a><span class="classifier">array, shape (n_cv_alphas,)</span></dt><dd><p>all the values of alpha along the path for the different folds</p>
+</dd>
+<dt><a href="#id27"><span class="problematic" id="id28">mse_path_</span></a><span class="classifier">array, shape (n_folds, n_cv_alphas)</span></dt><dd><p>the mean square error on left-out for each fold along the path
+(alpha values given by <code class="docutils literal notranslate"><span class="pre">cv_alphas</span></code>)</p>
+</dd>
+<dt><a href="#id29"><span class="problematic" id="id30">n_iter_</span></a><span class="classifier">array-like or int</span></dt><dd><p>the number of iterations run by Lars with the optimal alpha.</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">relaxed_lasso</span> <span class="kn">import</span> <span class="n">RelaxedLassoLarsCV</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">noise</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span> <span class="o">=</span> <span class="n">RelaxedLassoLarsCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">0.9991...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span><span class="o">.</span><span class="n">alpha_</span>
+<span class="go">0.3724...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span><span class="o">.</span><span class="n">theta_</span>
+<span class="go">4.1115...e-13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relasso</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">1</span><span class="p">,])</span>
+<span class="go">array([[-78.3854...]])</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="relaxed_lasso.RelaxedLassoLarsCV.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="headerlink" href="#relaxed_lasso.RelaxedLassoLarsCV.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model using X, y as training data.</p>
+<dl class="simple">
+<dt>X<span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Training data.</p>
+</dd>
+<dt>y<span class="classifier">array-like, shape (n_samples,)</span></dt><dd><p>Target values.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>self<span class="classifier">object</span></dt><dd><p>returns an instance of self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="relaxed_lasso.RelaxedLassoLarsCV.method">
+<code class="sig-name descname">method</code><em class="property"> = 'lasso'</em><a class="headerlink" href="#relaxed_lasso.RelaxedLassoLarsCV.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Relaxed Lasso’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020 Continental Corporation
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
