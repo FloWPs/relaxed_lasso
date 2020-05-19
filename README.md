@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/Flop-py/relaxed_lasso.svg?branch=readme)](https://travis-ci.com/Flop-py/relaxed_lasso)
+[![Build status](https://ci.appveyor.com/api/projects/status/5md8xfaoj1a59267/branch/appveyor?svg=true)](https://ci.appveyor.com/project/Flop-py/relaxed-lasso2/branch/appveyor)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Generic badge](https://img.shields.io/badge/Version-0.0.1-orange.svg)](https://shields.io/)
 
