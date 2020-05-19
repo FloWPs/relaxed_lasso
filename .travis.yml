@@ -16,10 +16,7 @@ include:
     env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 install: 
   - pip install -r requirements.txt
+  - pip install pytest-cov
   - pip install -e .
 script:
-  - pytest
-  - "mvn cobertura:cobertura"
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - pytest --cov=./
