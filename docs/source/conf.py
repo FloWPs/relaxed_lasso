@@ -17,7 +17,7 @@ sys.path.append(os.path.join(os.path.dirname(__name__), '../..'))
 
 import mock
 
-MOCK_MODULES = ['numpy', 'sklearn']
+MOCK_MODULES = ['numpy']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
 
