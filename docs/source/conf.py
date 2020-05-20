@@ -12,8 +12,9 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('../../relaxed_lasso/'))
-sys.path.append(os.path.join(os.path.dirname(__name__), '../..'))
+sys.path.insert(0, os.path.abspath('../../relaxed_lasso/'))
+# sys.path.append(os.path.join(os.path.dirname(__name__), '../..'))
+
 
 
 # -- Project information -----------------------------------------------------
@@ -35,8 +36,7 @@ master_doc = 'index'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'numpydoc'
+    'sphinx.ext.autodoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
