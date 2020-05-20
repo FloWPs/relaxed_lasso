@@ -28,7 +28,6 @@ EXTRAS_REQUIRE = {
     "tests": [
         "pytest",
         "pandas"]
-    "docs": ["sphinx_gallery"]
 }
 
 setup(name=DISTNAME,
