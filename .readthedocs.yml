@@ -16,3 +16,9 @@ sphinx:
 # don't use submodules for documentation (readthedocs fails when using submodules)
 submodules:
   exclude: all
+
+# Optionally set the version of Python and requirements required to build your docs
+python:
+  version: 3.7
+  install:
+    - requirements: docs/requirements.txt
