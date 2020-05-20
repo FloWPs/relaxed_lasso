@@ -2,7 +2,6 @@ coverage:
   precision: 2
   round: nearest
 ignore:
-  - "setup.py"
-  - "relaxed_lasso/__init__.py"
-  - "relaxed_lasso/_version.py"
-  - "relaxed_lasso/tests/__init__.py"  # Empty file
+  - setup.py
+  - */__init__.py
+  - */_version.py
