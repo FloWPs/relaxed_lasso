@@ -1,0 +1,8 @@
+joblib
+numpy
+scikit-learn
+scipy
+sklearn
+pandas
+pytest
+numpydoc
