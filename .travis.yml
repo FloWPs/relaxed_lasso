@@ -16,8 +16,10 @@ include:
     env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 install: 
   - pip install -r requirements.txt
+  - pip install coverage
   - pip install -e .
 script:
-  - pytest
+  - coverage run -m pytest
+  
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 34c2b287-08e8-4a7e-906f-a793babd8f9c
+  - bash <(curl -s https://codecov.io/bash)
