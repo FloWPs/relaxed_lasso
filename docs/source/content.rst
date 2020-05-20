@@ -128,6 +128,7 @@ The ``RelaxedLassoLars`` class
 .. autoclass:: relaxed_lasso.RelaxedLassoLars
     :members:
     :undoc-members:
+    :inherited-members:
     :show-inheritance:
 
 
@@ -136,4 +137,5 @@ The ``RelaxedLassoLarsCV`` class
 .. autoclass:: relaxed_lasso.RelaxedLassoLarsCV
     :members:
     :undoc-members:
+    :inherited-members:
     :show-inheritance:
