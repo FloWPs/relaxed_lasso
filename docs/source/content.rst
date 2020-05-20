@@ -125,7 +125,7 @@ API Reference
 
 The ``RelaxedLassoLars`` class
 ******************************
-.. autoclass:: relaxed_lasso.RelaxedLassoLars
+.. autoclass:: relaxed_lasso::RelaxedLassoLars
     :members:
     :undoc-members:
     :show-inheritance:
@@ -133,7 +133,7 @@ The ``RelaxedLassoLars`` class
 
 The ``RelaxedLassoLarsCV`` class
 ********************************
-.. autoclass:: relaxed_lasso.RelaxedLassoLarsCV
+.. autoclass:: relaxed_lasso::RelaxedLassoLarsCV
     :members:
     :undoc-members:
     :show-inheritance:
