@@ -11,6 +11,7 @@ Welcome to Relaxed Lasso's documentation!
    :caption: Contents:
 
    content
+   api
 
 
 Indices and tables
