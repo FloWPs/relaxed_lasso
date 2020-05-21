@@ -118,22 +118,3 @@ An example of the ``RelaxedLassoLarsCV`` class :
   print("Best Alpha: ", relassoCV.alpha_)
   print("Best Theta: ", relassoCV.theta_)
   relasso.predict(X)
-
-
-API Reference
-==============
-
-The ``RelaxedLassoLars`` class
-******************************
-.. autoclass:: relaxed_lasso.RelaxedLassoLars
-    :members:
-    :inherited-members:
-    :show-inheritance:
-
-
-The ``RelaxedLassoLarsCV`` class
-********************************
-.. autoclass:: relaxed_lasso.RelaxedLassoLarsCV
-    :members:
-    :inherited-members:
-    :show-inheritance:
