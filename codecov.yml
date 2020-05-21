@@ -3,5 +3,6 @@ coverage:
   round: nearest
 ignore:
   - setup.py
-  - */__init__.py
-  - */_version.py
+  - relaxed_lasso/__init__.py
+  - relaxed_lasso/_version.py
+  - relaxed_lasso/tests
