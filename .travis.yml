@@ -22,4 +22,4 @@ script:
   - coverage run -m pytest
   
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -t 34c2b287-08e8-4a7e-906f-a793babd8f9c
+  - bash <(curl -s https://codecov.io/bash) -t 34c2b287-08e8-4a7e-906f-a793babd8f9c -y ./codecov.yml
