@@ -2,17 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2020-05-14
-
-### Added
-
-- Covid-19 from [@pangolin](https://github.com/pangolin).
-- Market crash from [@wallstreet](https://github.com/wallstreet).
-- Changelog and contributing
-
-### Changed
-- Badges in READ ME
-- Fixed typos in Indonesian translation
-- What makes unicorn cry ?
+## [1.1.0] - 2020-05-27
