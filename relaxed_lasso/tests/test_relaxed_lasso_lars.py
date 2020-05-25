@@ -11,7 +11,8 @@ from sklearn.utils._testing import assert_raises
 from sklearn.model_selection import KFold
 from sklearn.datasets import make_regression
 
-from relaxed_lasso import RelaxedLassoLars, RelaxedLassoLarsCV, relasso_lars_path
+from relaxed_lasso import RelaxedLassoLars, RelaxedLassoLarsCV
+from relaxed_lasso import relasso_lars_path
 
 
 # Create highly colinear dataset for regression.
@@ -48,9 +49,41 @@ Xb, yb = make_regression(n_samples=50,
                          random_state=0,
                          coef=False)
 
+# For testing when extrapolations do cross zero for some sets
+X1 = np.array([[1.41029989e+00, 1.45268968e+00, 5.99769397e-01,
+                1.13684110e+00, 3.06489880e-01],
+               [-2.46677388e-01, 9.78422980e-01, -2.64202914e-01,
+                -6.79972180e-02, 3.79508942e-01],
+               [-1.24038440e+00, -2.46787653e-01, 1.13914794e-01,
+                -5.83695285e-01, -1.12026312e-01],
+               [-1.99505603e-01, -4.71148377e-01, -5.55252507e-01,
+                2.28270105e+00, 2.07312643e+00],
+               [1.60684757e+00, 1.60979535e+00, 1.70659724e+00,
+                -1.72166846e-01, 3.42278052e-01],
+               [-5.61663629e-02, -2.61004878e-04, 4.55467197e-01,
+                -2.35717905e-01, -5.45925262e-01],
+               [1.12859835e+00, -4.18807781e-02, -3.02089375e+00,
+                -1.02441435e+00, 1.70315086e-01],
+               [-2.46458954e-01, 8.15046392e-01, 3.00594276e-01,
+                2.53847641e-01, 2.95552912e-02]])
+y1 = np.array([20.26793157, 2.18151214, -9.53258406, -3.86202872, 26.71976978,
+               2.80537018, -1.44973078, 3.40853846])
+
+X2 = np.array([[-0.3776794, 0.36456531, -1.01243111, -0.38480894, -0.60915583],
+               [0.7870042, 1.38241241, 2.61123082, 1.8878823, 0.39648371],
+               [0.52548127, 0.14017289, 0.79806355, 0.41964711, 0.16745396],
+               [0.95053531, -0.5085372, -0.16109607, 0.01948371, -0.93249031],
+               [0.77518773, 0.5312382, 0.07886306, 0.12283602, -0.66082482],
+               [-0.72813159, -1.71027536, -0.99093288, -2.04303984,
+                1.78732814],
+               [-0.04580302, 0.3174949, 0.82426606, 0.87401556, -0.46187965],
+               [0.01989191, -0.83380189, 0.34284543, 1.00724264, 1.44058752]])
+y2 = np.array([-4.04440993, 20.14707046, 7.55346146, 4.38411891,
+               8.12528819, -16.48548726, 3.02433457, -3.16326688])
+
 
 def test_theta_equal_1():
-    # Validate that Relaxed asso with theta=1 is equivalent to Lasso.
+    # Validate that Relaxed Lasso with theta=1 is equivalent to Lasso.
     relasso = RelaxedLassoLars(alpha, 1).fit(X_train, y_train)
     lasso_prediction = lasso.predict(X_test)
     relasso_prediction = relasso.predict(X_test)
@@ -58,7 +91,7 @@ def test_theta_equal_1():
 
 
 def test_theta_equal_0():
-    # Validate that Relaxed asso with theta=0 is equivalent to OLS.
+    # Validate that Relaxed Lasso with theta=0 is equivalent to OLS.
     relasso = RelaxedLassoLars(alpha, 0).fit(X_train, y_train)
     mask = lasso.active_
     lr = LinearRegression().fit(X_train[:, mask], y_train)
@@ -67,36 +100,38 @@ def test_theta_equal_0():
     assert_array_almost_equal(ols_prediction, relasso_prediction)
 
 
-def test_simple_vs_refined_algorithm() :
-    # Test the consistency of the results between the 2 versions of the agorithm.
-    
+def test_simple_vs_refined_algorithm():
+    # Test the consistency of the results between the 2 versions of
+    # the algorithm.
+
     alpha = 1.0
     theta = 1.0
-    
+
     # Simple Algorithm (2 steps of Lasso Lars)
     lasso1 = LassoLars(alpha=alpha)
     lasso1.fit(X_train, y_train)
     coef1 = pd.Series(lasso1.coef_)
     X1 = pd.DataFrame(X_train.copy())
-    X1.loc[:, coef1[coef1==0].index] = 0
-    
+    X1.loc[:, coef1[coef1 == 0].index] = 0
+
     lasso2 = LassoLars(alpha=alpha*theta)
     lasso2.fit(X1, y_train)
     pred_simple = lasso2.predict(X_test)
-    
+
     # Refined Algorithm
     relasso = RelaxedLassoLars(alpha=alpha, theta=theta)
     relasso.fit(X_train, y_train)
     pred_refined = relasso.predict(X_test)
-        
+
     assert_array_almost_equal(pred_simple, pred_refined)
     assert_array_almost_equal(lasso2.coef_, relasso.coef_)
-    assert_almost_equal(lasso2.score(X_test, y_test), relasso.score(X_test, y_test))
-    
+    assert_almost_equal(lasso2.score(X_test, y_test),
+                        relasso.score(X_test, y_test))
+
 
 def test_relaxed_lasso_lars():
     # Relaxed Lasso regression convergence test using score.
-    
+
     # With more samples than features
     X1, y1 = make_regression(n_samples=50,
                              n_features=10,
@@ -104,13 +139,13 @@ def test_relaxed_lasso_lars():
                              noise=2,
                              random_state=0,
                              coef=False)
-    
+
     relasso = RelaxedLassoLars()
     relasso.fit(X1, y1)
-    
-    assert relasso.coef_.shape == (X1.shape[1], )
+
+    assert relasso.coef_.shape == (X1.shape[1],)
     assert relasso.score(X1, y1) > 0.9
-    
+
     # With more features than samples
     X2, y2 = make_regression(n_samples=50,
                              n_features=100,
@@ -118,10 +153,10 @@ def test_relaxed_lasso_lars():
                              noise=2,
                              random_state=0,
                              coef=False)
-    
+
     relasso = RelaxedLassoLars()
     relasso.fit(X2, y2)
-    
+
     assert relasso.coef_.shape == (X2.shape[1], )
     assert relasso.score(X2, y2) > 0.9
 
@@ -131,7 +166,7 @@ def test_shapes(X, y):
     # Test shape of attributes.
     relasso = RelaxedLassoLars()
     relasso.fit(X, y)
-    
+
     # Multi-targets
     if type(y[0]) == np.ndarray:
         n_alphas = len(relasso.active_[0])
@@ -139,9 +174,11 @@ def test_shapes(X, y):
         assert relasso.alphas_[0].shape == (n_alphas + 1,)
         assert relasso.coef_.shape == (y.shape[1], X.shape[1])
         assert len(relasso.coef_path_) == y.shape[1]
-        if len(relasso.alphas_[0]) > 1 :
-            assert relasso.coef_path_[0].shape == (X.shape[1], len(relasso.alphas_[0]), len(relasso.alphas_[0]) - 1)
-        else :
+        if len(relasso.alphas_[0]) > 1:
+            assert relasso.coef_path_[0].shape == (X.shape[1],
+                                                   len(relasso.alphas_[0]),
+                                                   len(relasso.alphas_[0]) - 1)
+        else:
             assert relasso.coef_path_[0].shape == (X.shape[1], 1, 1)
         assert relasso.intercept_.shape == (y.shape[1],)
 
@@ -150,9 +187,11 @@ def test_shapes(X, y):
         n_alphas = len(relasso.active_)
         assert relasso.alphas_.shape == (n_alphas + 1,)
         assert relasso.coef_.shape == (X.shape[1],)
-        if len(relasso.alphas_) > 1 :
-            assert relasso.coef_path_.shape == (X.shape[1], len(relasso.alphas_), len(relasso.alphas_) - 1)
-        else :
+        if len(relasso.alphas_) > 1:
+            assert relasso.coef_path_.shape == (X.shape[1],
+                                                len(relasso.alphas_),
+                                                len(relasso.alphas_) - 1)
+        else:
             assert relasso.coef_path_.shape == (X.shape[1], 1, 1)
 
 
@@ -181,9 +220,9 @@ def test_no_path():
     # Test that the 'return_path=False' option returns the correct output.
     alphas_, _, coef_path_ = relasso_lars_path(X, y)
     alpha_, _, coef = relasso_lars_path(X, y, return_path=False)
-    
+
     # coef_path : array, shape (n_features, n_alphas + 1, n_alphas)
-    assert_array_almost_equal(coef, coef_path_[:,-1,-1]) 
+    assert_array_almost_equal(coef, coef_path_[:, -1, -1])
     assert alpha_ == alphas_[-1]
 
 
@@ -195,12 +234,13 @@ def test_no_path_precomputed():
     alpha_, _, coef = relasso_lars_path(
         X, y, method='lasso', Gram=G, return_path=False)
 
-    assert_array_almost_equal(coef, coef_path_[:,-1,-1])
+    assert_array_almost_equal(coef, coef_path_[:, -1, -1])
     assert alpha_ == alphas_[-1]
 
 
 def test_no_path_all_precomputed():
-    # Test that the 'return_path=False' option with Gram and Xy remains correct.
+    # Test that the 'return_path=False' option with Gram and Xy
+    # remains correct.
     G = np.dot(X.T, X)
     Xy = np.dot(X.T, y)
 
@@ -209,21 +249,21 @@ def test_no_path_all_precomputed():
     alpha_, _, coef = relasso_lars_path(
         X, y, method='lasso', Gram=G, Xy=Xy, alpha_min=0.9, return_path=False)
 
-    assert_array_almost_equal(coef, coef_path_[:,-1,-1])
+    assert_array_almost_equal(coef, coef_path_[:, -1, -1])
 
     assert alpha_ == alphas_[-1]
 
 
 def test_relasso_lars_path_length():
     # Test that the path length of the RelaxedLassoLars is right.
-    
+
     relasso = RelaxedLassoLars(alpha=0.2)
     relasso.fit(X, y)
     relasso2 = RelaxedLassoLars(alpha=relasso.alphas_[2])
     relasso2.fit(X, y)
 
     assert_array_almost_equal(relasso.alphas_[:3], relasso2.alphas_)
-    
+
     # Also check that the sequence of alphas is always decreasing
     assert np.all(np.diff(relasso.alphas_) < 0)
 
@@ -233,5 +273,13 @@ def test_singular_matrix():
     X1 = np.array([[1, 1.], [1., 1.]])
     y1 = np.array([1, 1])
     _, _, coef_path = relasso_lars_path(X1, y1)
-    
+
     assert_array_almost_equal(coef_path.T[-1, :], [[0, 0], [1, 0]])
+
+
+@pytest.mark.parametrize("X, y", [(X1, y1), (X2, y2)])
+def test_coefficient_sign_change(X, y):
+    # Test when extrapolations do cross zero for some set
+    alphas_, _, coefs_ = relasso_lars_path(X, y)
+    n_alphas = alphas_.shape[0]
+    assert coefs_.shape == (X.shape[1], n_alphas, n_alphas - 1)
