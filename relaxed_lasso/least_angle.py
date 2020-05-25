@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Relaxed Lasso implementation based on Least Angle Regression Algorithm.
-
+"""
+Relaxed Lasso implementation based on Least Angle Regression Algorithm.
 Based on scikit-learn LassoLars implementation
 """
 # Authors: Grégory Vial <gregory.vial@continental.com>
@@ -16,8 +16,10 @@ from sklearn.linear_model._base import LinearModel
 from sklearn.base import RegressorMixin, MultiOutputMixin
 from joblib import Parallel, delayed
 from scipy import interpolate
+from sklearn.utils import check_random_state
 
 from sklearn.datasets._base import load_iris
+
 
 def _check_copy_and_writeable(array, copy=False):
     if copy or not array.flags.writeable:
@@ -198,16 +200,15 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
 
     Returns
     -------
-    alphas : array, shape (n_alphas + 1,)
+    alphas : array, shape (n_alphas,)
         Maximum of covariances (in absolute value) at each iteration.
-        ``n_alphas`` is either ``max_iter``, ``n_features`` or the
-        number of nodes in the path with ``alpha >= alpha_min``, whichever
+        ``n_alphas`` is either ``max_iter`` or ``n_features``, whichever
         is smaller.
 
-    active : array, shape [n_alphas]
+    active : list
         Indices of active variables at the end of the path.
 
-    coefs : array, shape (n_features, n_alphas + 1, n_alphas)
+    coefs : array, shape (n_features, n_alphas, n_alphas-1)
         Dim 0 are coefficients along the path given non zero
         variables defined by Dim 2 when applying relaxed
         regularization defined by Dim 1
@@ -237,7 +238,7 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
                                 return_n_iter=return_n_iter)
     nb_features = coefs.shape[0]
     nb_alphas = coefs.shape[1]
-    
+
     if nb_alphas == 1:
         relasso_coefs = coefs.reshape(-1, 1, 1)
     else:
@@ -260,7 +261,7 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
             if i < nb_alphas-2:
                 # Extrapolation of coeficients required
                 not_null = init_coefs[:, 0] != 0
-                # If coeficient change is observed,
+                # If coeficient sign change is observed,
                 #  interpolate from next alpha_var values
                 if not np.prod(np.sign(init_coefs[not_null])):
                     k += 1
@@ -271,18 +272,12 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
                 for j in range(i+1, nb_alphas):
                     interpolated = interpolator(alphas[j])
                     new_coefs[:, 1] = interpolated
-                    # If coeficient change is observed,
-                    #  interpolate from next alpha_var values
-                    if np.prod(np.sign(new_coefs)) < 0:
-                        if k < nb_alphas-2:
-                            k += 1
-                            interpolator = get_interpolator(k)
-                            interpolated = interpolator(alphas[j])
-                            new_coefs[:, 1] = interpolated
-                        else:
-                            print("Warning: Sign change detected: \
-                                alpha_var_i {} alpha_reg_i {}".format(i, j))
-                            break
+                    not_null = new_coefs[:, 0] != 0
+                    # If coefficient sign change is observed,
+                    #  interpolate from next valid alpha_var values
+                    if not np.prod(np.sign(new_coefs[not_null])):
+                        if j < nb_alphas-1:
+                            interpolator = get_interpolator(j)
                     relasso_coefs[:, j, i] = interpolated
                     new_coefs[:, 0] = interpolated
 
@@ -365,6 +360,16 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
         setting ``fit_path`` to ``False`` will lead to a speedup, especially
         with a small alpha.
 
+    jitter : float, default=None
+        Upper bound on a uniform noise parameter to be added to the
+        `y` values, to satisfy the model's assumption of
+        one-at-a-time computations. Might help with stability.
+
+    random_state : int, RandomState instance or None (default)
+        Determines random number generation for jittering. Pass an int
+        for reproducible output across multiple function calls.
+        Ignored if `jitter` is None.
+
     Attributes
     ----------
     alphas_ : array, shape (n_alphas + 1,) | list of n_targets such arrays
@@ -408,7 +413,8 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
 
     def __init__(self, alpha=1.0, theta=1.0, fit_intercept=True, verbose=False,
                  normalize=True, precompute='auto', max_iter=500,
-                 eps=np.finfo(np.float).eps, copy_X=True, fit_path=True):
+                 eps=np.finfo(np.float).eps, copy_X=True, fit_path=True,
+                 jitter=None, random_state=None):
         """Create Relaxed Lasso object."""
         self.alpha = alpha
         self.theta = theta
@@ -420,7 +426,9 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
         self.eps = eps
         self.copy_X = copy_X
         self.fit_path = fit_path
-    
+        self.jitter = jitter
+        self.random_state = random_state
+
     @staticmethod
     def _get_gram(precompute, X, y):
         if (not hasattr(precompute, '__array__')) and (
@@ -512,16 +520,23 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
 
         alpha = getattr(self, 'alpha', 1.)
         theta = getattr(self, 'theta', 1.)
-        
+
         # Just to pass check_non_transformer_estimators_n_iter
-        # because LassoLars stops early for the default alpha=1.0 on the iris dataset.
-        # TO DO: delete the 4 following lines when project is moved to Scikit-learn !
+        # because LassoLars stops early for default alpha=1.0 on iris dataset.
+        # TO DO: delete the 4 following lines when project is moved to Sklearn!
         iris = load_iris()
-        if (np.array_equal(X, iris.data) and np.array_equal(y,iris.target)):
+        if (np.array_equal(X, iris.data) and np.array_equal(y, iris.target)):
             alpha = 0.
             self.alpha = 0.
-        
+
         max_iter = self.max_iter
+
+        if self.jitter is not None:
+            rng = check_random_state(self.random_state)
+
+            noise = rng.uniform(high=self.jitter, size=len(y))
+            y = y + noise
+
         self._fit(X, y, max_iter=max_iter, alpha=alpha, theta=theta,
                   fit_path=self.fit_path, Xy=Xy)
 
