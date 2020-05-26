@@ -1,6 +1,8 @@
 # Contributing to Relaxed Lasso
 
-When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
+This repository is maintained by the Continental Organization.
+
+When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the maintainers of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
@@ -10,7 +12,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 You can help with code review, which reduces bugs, and over time has a wonderful side effect of making the code more readable and therefore more approachable. It's also a great way to teach and learn. Feel free to jump in! Be welcoming, appreciative, and helpful.
 
-You can monitor issues and the chat room, and help other people who have questions about contributing to Relaxed Lasso Lars, or using it for their projects.
+You can monitor issues and help other people who have questions about contributing to Relaxed Lasso, or using it for their projects.
 
 Feel free to reach out to one of the maintainers if you need help getting started.
 
@@ -24,10 +26,19 @@ Feel free to star the repository. This will help increase the visibility of the 
 
 ## Pull Request Process
 
+If other contributors want to work on a repository, they must fork the Continental repository first. Within their fork, it is possible to apply any changes and later push changes back to its origin.
+
+Technically, other contributors can contribute back to the Continental repository by creating a pull request. A member of the commit team must review this pull request and decide if it shall be integrated or not. If it shall be integrated, which can also be after some adaptions, a member of the commit team must merge the pull request into the intended branch.
+
+However, a contribution can only be accepted if the following conditions will be met during the pull request :
+
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a build.
 2. Update the README.md with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations and container parameters.
 3. Increase the version numbers in any examples files and the README.md to the new version that this Pull Request would represent.
 4. You may merge the Pull Request in once you have the sign-off of at least one maintainer from the Continental organization, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
+5. The contributor has signed a Contributor License Agreement (CLA).
+
+Concerning a pull request, feedback from the maintainers should usuallly be provided within a time frame of 10 working days.
 
 ## Getting help
 
