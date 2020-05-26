@@ -24,7 +24,7 @@ copyright = '2020 Continental Corporation'
 author = 'Grégory Vial, Flora Estermann'
 
 # The full version, including alpha/beta/rc tags.
-from relaxed_lasso import __version__
+from ../../relaxed_lasso import __version__
 release = __version__
 
 
