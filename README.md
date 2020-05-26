@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.com/Flop-py/relaxed_lasso.svg?branch=master)](https://travis-ci.com/Flop-py/relaxed_lasso)
-[![Build status](https://ci.appveyor.com/api/projects/status/5md8xfaoj1a59267/branch/appveyor?svg=true)](https://ci.appveyor.com/project/Flop-py/relaxed-lasso2/branch/appveyor)
+[![Build status](https://ci.appveyor.com/api/projects/status/5md8xfaoj1a59267/branch/master?svg=true)](https://ci.appveyor.com/project/Flop-py/relaxed-lasso2/branch/master)
 [![codecov](https://codecov.io/gh/Flop-py/relaxed_lasso2/branch/master/graph/badge.svg)](https://codecov.io/gh/Flop-py/relaxed_lasso2)
 [![Documentation Status](https://readthedocs.org/projects/relaxed-lasso2/badge/?version=latest)](https://relaxed-lasso2.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Generic badge](https://img.shields.io/badge/Version-0.0.1-orange.svg)](CHANGELOG.md)
+[![Generic badge](https://img.shields.io/badge/Version-1.0.0-orange.svg)](CHANGELOG.md)
 
 # Relaxed Lasso
 
@@ -135,9 +135,15 @@ array([42.5904..., 50.2196..., 98.7397..., 26.8124..., 74.5303...])
 >>> true_coefs[true_coefs != 0]
 array([41.7911..., 50.9413..., 99.6751..., 27.7122..., 74.2324...])
 ```
+For more, see [examples](./examples).
 
-## Contribution
+## Changelog
+See [CHANGELOG.md](./CHANGELOG.md).
+
+## Contributing
 This implementation was written by [Gregory Vial](mailto:gregory.vial@continental.com) and [Flora Estermann](mailto:flora.estermann@continental.com).
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md). 
 
 ## License
 Copyright (c) 2020 Continental Corporation. All rights reserved.
