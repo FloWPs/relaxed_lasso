@@ -23,8 +23,9 @@ project = 'Relaxed Lasso'
 copyright = '2020 Continental Corporation'
 author = 'Grégory Vial, Flora Estermann'
 
-# The full version, including alpha/beta/rc tags
-release = '0.0.1'
+# The full version, including alpha/beta/rc tags.
+from relaxed_lasso import __version__
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
