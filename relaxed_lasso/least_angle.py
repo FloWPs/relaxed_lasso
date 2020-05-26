@@ -10,7 +10,7 @@ Based on scikit-learn LassoLars implementation
 
 import numpy as np
 from sklearn.linear_model import lars_path
-from sklearn.utils import check_X_y, as_float_array
+from sklearn.utils import as_float_array
 from sklearn.model_selection import check_cv
 from sklearn.linear_model._base import LinearModel
 from sklearn.base import RegressorMixin, MultiOutputMixin
@@ -288,9 +288,8 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
         alphas = alphas[alphas >= alpha_reg_min_]
 
     if not return_path:
-        if nb_alphas > 1:
-            relasso_coefs = relasso_coefs[:, -1, -1]
-            alphas = alphas[-1:]
+        relasso_coefs = relasso_coefs[:, -1, -1]
+        alphas = alphas[-1:]
 
     if return_n_iter:
         return alphas, active, relasso_coefs, n_iter
@@ -492,6 +491,7 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
                 self.n_iter_.append(n_iter_)
             if n_targets == 1:
                 self.alphas_ = self.alphas_[0]
+                self.coef_ = self.coef_[0]
                 self.n_iter_ = self.n_iter_[0]
 
         self._set_intercept(X_offset, y_offset, X_scale)
@@ -516,7 +516,7 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
             returns an instance of self.
 
         """
-        X, y = check_X_y(X, y, y_numeric=True, multi_output=True)
+        X, y = self._validate_data(X, y, y_numeric=True, multi_output=True)
 
         alpha = getattr(self, 'alpha', 1.)
         theta = getattr(self, 'theta', 1.)
@@ -682,7 +682,7 @@ class RelaxedLassoLarsCV(RelaxedLassoLars):
             returns an instance of self
 
         """
-        X, y = check_X_y(X, y, y_numeric=True)
+        X, y = self._validate_data(X, y, y_numeric=True)
         X = as_float_array(X, copy=self.copy_X)
         y = as_float_array(y, copy=self.copy_X)
 
