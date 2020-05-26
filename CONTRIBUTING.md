@@ -45,7 +45,7 @@ Concerning a pull request, feedback from the maintainers should usuallly be prov
 There are three places to get help:
 
 1. If you're new to the project, a good place to start is the [README](README.md).
-2. Take a look at the [examples](/examples).
+2. Take a look at the [examples](/examples) and [documentation](https://relaxed-lasso2.readthedocs.io/).
 3. If you need help getting started or implementing a change, open an issue with your question. If there is already an issue open for the feature you're working on, you can post there.
 
 ## Code of Conduct
