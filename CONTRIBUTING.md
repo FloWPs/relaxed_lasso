@@ -26,17 +26,17 @@ Feel free to star the repository. This will help increase the visibility of the 
 
 ## Pull Request Process
 
-If other contributors want to work on a repository, they must fork the Continental repository first. Within their fork, it is possible to apply any changes and later push changes back to its origin.
+If you want to work on this repository, you must fork the Continental repository first. Within your fork, it is possible to apply any changes and later push changes back to its origin.
 
-Technically, other contributors can contribute back to the Continental repository by creating a pull request. A member of the commit team must review this pull request and decide if it shall be integrated or not. If it shall be integrated, which can also be after some adaptions, a member of the commit team must merge the pull request into the intended branch.
+Technically, you can contribute back to the Continental repository by creating a pull request. A member of the team will review this pull request and decide if it shall be integrated or not. If it shall be integrated, which can also be after some adaptions, a member of the team will merge the pull request into the intended branch.
 
-However, a contribution can only be accepted if the following conditions will be met during the pull request :
+However, a contribution can only be accepted if the following conditions are met during the pull request :
 
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a build.
 2. Update the README.md with details of changes to the interface, this includes new environment variables, exposed ports, useful file locations and container parameters.
 3. Increase the version numbers in any examples files and the README.md to the new version that this Pull Request would represent.
-4. You may merge the Pull Request in once you have the sign-off of at least one maintainer from the Continental organization, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
-5. The contributor has signed a Contributor License Agreement (CLA).
+4. Once you have the sign-off of at least one maintainer from the Continental organization, you may request the second reviewer to merge the Pull Request for you.
+5. Sign a Contributor License Agreement (CLA).
 
 Concerning a pull request, feedback from the maintainers should usuallly be provided within a time frame of 10 working days.
 
