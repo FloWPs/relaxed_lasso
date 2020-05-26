@@ -283,3 +283,16 @@ def test_coefficient_sign_change(X, y):
     alphas_, _, coefs_ = relasso_lars_path(X, y)
     n_alphas = alphas_.shape[0]
     assert coefs_.shape == (X.shape[1], n_alphas, n_alphas - 1)
+
+
+@pytest.mark.parametrize("X, y", [(X, y), (Xa, ya), (Xb, yb)])
+def test_no_fit_path(X, y):
+    # Test that the 'fit_path=False' option return the correct attributes.
+    relasso = RelaxedLassoLars(fit_path=False)
+    relasso.fit(X, y)
+    try:
+        print(relasso.coef_path_)
+    except AttributeError:
+        error = 1  # coef_path doesn't exist
+
+    assert error == 1
