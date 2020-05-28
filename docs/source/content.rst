@@ -10,27 +10,39 @@ For more information about Relaxed Lasso, see below.
 What is relaxed lasso, when is it used ?
 ****************************************
 
-Lasso, and its improvement relaxed lasso, are extensions of linear regressions.
+Lasso, and its improvement Relaxed Lasso, are extensions of linear regressions.
 The main benefits are their ability to deal with colinearity, high dimensions
 (even higher than number of samples) and the fact that they lead to a sparse
 solutions.
 
 According to Hastie, Tibshirani (2016) in `Best Subset, Forward Stepwise, or
-Lasso <https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf>`_, relaxed lasso is the overall winner when it comes to variables
-selection. Surprisingly up to now there was no python implementation of this
+Lasso <https://www.stat.cmu.edu/~ryantibs/papers/bestsubset.pdf>`_, relaxed lasso
+is the overall winner when it comes to variables selection.
+
+Surprisingly up to now there was no Python implementation of this
 algorithm, although one exists in R (`relaxo <https://cran.r-project.org/web/packages/relaxo/index.html>`_).
 
 Relaxed Lasso concept
 **********************
 
-The key concept is that there are two regularization parameters, alpha which
-controls the variables that will be retained in the model, and theta (value
-between 0 and 1) which acts as a multiplicative factor of alpha to choose the
+The current work is motivated by linear prediction for high dimensional data,
+where the number of predictor variables p is very large, possibly very much
+larger than the number of observations n.
+Regularization is clearly of central importance for these high dimensional problems.
+
+The key concept is that there are two regularization parameters, α which
+controls the variables that will be retained in the model, and θ (value
+between 0 and 1) which acts as a multiplicative factor of α to choose the
 amount of regularization applied to the subset of variables.
 
-Theta = 1 corresponds to standard Lasso
-Theta = 0 corresponds to the ordinary least square solution for the subset of
-variables selected with alpha.
+The relaxed Lasso estimator is defined for α ∈ [0, ∞) and φ ∈ (0, 1] as :
+
+.. math:: β^{α,θ} = \argmin_β n^{−1} \sum_{i=1}^{n} 􏰇(Y_i − X_i^{T} {β · 1Mλ })2 + φλ∥β∥1,
+\argmin_β f(x) &= \{x \mid f(x) = \min_{x'} f(x')\} \\
+
+- θ = 1 corresponds to standard Lasso.
+- θ = 0 corresponds to the Ordinary Least Square solution for the subset of
+  variables selected with α.
 
 Experiment results
 ******************
