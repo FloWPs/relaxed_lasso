@@ -30,15 +30,19 @@ where the number of predictor variables p is very large, possibly very much
 larger than the number of observations n.
 Regularization is clearly of central importance for these high dimensional problems.
 
-The key concept is that there are two regularization parameters, α which
-controls the variables that will be retained in the model, and θ (value
-between 0 and 1) which acts as a multiplicative factor of α to choose the
+The key concept is that there are two regularization parameters, α ∈ [0, ∞) which
+controls the variables that will be retained in the model, and θ ∈ (0, 1]
+which acts as a multiplicative factor of α to choose the
 amount of regularization applied to the subset of variables.
 
-The relaxed Lasso estimator is defined for α ∈ [0, ∞) and φ ∈ (0, 1] as :
+The relaxed Lasso estimator is defined for α ∈ [0, ∞) and θ ∈ (0, 1] as :
 
-.. math:: β^{α,θ} = \argmin_β n^{−1} \sum_{i=1}^{n} 􏰇(Y_i − X_i^{T} {β · 1Mλ })2 + φλ∥β∥1,
-\argmin_β f(x) &= \{x \mid f(x) = \min_{x'} f(x')\} \\
+.. image:: images/def_relaxo.png
+
+The implementation in the class RelaxedLassoLars uses Least-angle regression (LARS)
+as the algorithm to fit the coefficients.
+
+Note that :
 
 - θ = 1 corresponds to standard Lasso.
 - θ = 0 corresponds to the Ordinary Least Square solution for the subset of
