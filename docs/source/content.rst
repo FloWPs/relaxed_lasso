@@ -39,14 +39,37 @@ The relaxed Lasso estimator is defined for α ∈ [0, ∞) and θ ∈ (0, 1] as 
 
 .. image:: images/def_relaxo.png
 
-The implementation in the class RelaxedLassoLars uses Least-angle regression (LARS)
-as the algorithm to fit the coefficients.
-
 Note that :
 
 - θ = 1 corresponds to standard Lasso.
 - θ = 0 corresponds to the Ordinary Least Square solution for the subset of
   variables selected with α.
+
+Implementation
+==============
+
+The implementation in the class RelaxedLassoLars uses Least-angle regression (LARS)
+as the algorithm to fit the coefficients.
+
+Algorithm
+*********
+
+The main advantage of the relaxed Lasso estimator over Bridge estimation is
+the low computational complexity.
+
+Basically, the Relaxed Lasso solution is equivalent to computing 2 steps of Lasso
+in a row. The first stage being for the variable selection as in ordinary Lasso estimation,
+and the second one for the shrinkage of coefficients.
+
+It is shown in the paper that for many data sets, the computational effort of computing
+all relaxed Lasso solutions is identical to that of solving the ordinary Lasso solutions.
+Because the “direction” in which relaxed Lasso solutions are found is identical to the
+directions of ordinary Lasso solutions. These directions do not have to be computed again.
+
+Indeed, by extrapolating the path of the ordinary Lasso solutions, all relaxed Lasso
+solutions can often be found. So we used the refined version of this algorithm instead.
+
+.. image:: images/second_step.png
 
 Experiment results
 ******************
@@ -90,7 +113,6 @@ Here are the results of running lasso and relaxed lasso on 100 such datasets:
 +-------------+----------------------------------+-------------------------+
 
 In such a setting it shows a clear superiority of relaxed lasso which leads to sparser, better fitting model.
-
 
 Example gallery
 ===============
