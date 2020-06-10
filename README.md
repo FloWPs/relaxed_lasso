@@ -32,13 +32,13 @@ algorithm, although one exists in R
 
 #### Relaxed Lasso concept
 
-The key concept is that there are two regularization parameters, $\alpha$ (alpha) which
-controls the variables that will be retained in the model, and theta $\theta$ (theta) (value
-between 0 and 1) which acts as a multiplicative factor of alpha to choose the
+The key concept is that there are two regularization parameters, α (alpha) which
+controls the variables that will be retained in the model, and θ (theta), value
+between 0 and 1, which acts as a multiplicative factor of α to choose the
 amount of regularization applied to the subset of variables.
-* $\theta = 1$ corresponds to standard Lasso
-* $\theta = 0$ corresponds to the ordinary least square solution for the subset of
-variables selected with alpha.
+* θ = 1 corresponds to standard Lasso
+* θ = 0 corresponds to the ordinary least square solution for the subset of
+variables selected with α.
 
 ## Implementation
 
@@ -57,19 +57,19 @@ solution path, which is particularly well suited for extrapolation of
 coefficients values when applying the 'relaxation' factor theta.
 
 #### Naming convention
-The parameters called $\alpha$ and $\theta$ in this implementation are called
-respectively $\lambda$ (lambda) and $\phi$ (phi) in the paper.
+The parameters called α and θ in this implementation are called
+respectively λ (lambda) and Φ (phi) in the paper.
 
 This choice was made to stick as closely as possible to scikit-learn
 conventions.
 
 #### Additional implementation details
-The RelaxedLassoLarsCV algorithm relies on the exploration of a grid of $\alpha$ 
-values. One dimension is the $\alpha$ controlling the variables choice (alpha_var)
-whilst the other dimension is the value of $\alpha$ controlling the actual amount
+The RelaxedLassoLarsCV algorithm relies on the exploration of a grid of α
+values. One dimension is the α controlling the variables choice (alpha_var)
+whilst the other dimension is the value of α controlling the actual amount
 of regularization (alpha_reg).
 
-The value of $\theta$  is computed by dividing alpha_reg by alpha_var.
+The value of θ is computed by dividing alpha_reg by alpha_var.
 
 __NB:__ We added the following condition to satisfy the requirements from
         scikit-learn-contrib (_check_estimator_)
