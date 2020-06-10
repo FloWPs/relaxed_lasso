@@ -54,7 +54,7 @@ For pros and cons of each algorithm, see the [lasso documentation](https://sciki
 
 The reason for choosing LARS is that it produces a full piecewise linear
 solution path, which is particularly well suited for extrapolation of
-coefficients values when applying the 'relaxation' factor theta.
+coefficients values when applying the 'relaxation' factor θ.
 
 #### Naming convention
 The parameters called α and θ in this implementation are called
@@ -64,10 +64,10 @@ This choice was made to stick as closely as possible to scikit-learn
 conventions.
 
 #### Additional implementation details
-The RelaxedLassoLarsCV algorithm relies on the exploration of a grid of α
-values. One dimension is the α controlling the variables choice (alpha_var)
-whilst the other dimension is the value of α controlling the actual amount
-of regularization (alpha_reg).
+The RelaxedLassoLarsCV algorithm relies on the exploration of a grid of
+values for α. One dimension is the α controlling the variables choice
+(alpha_var) whilst the other dimension is the value of α controlling
+the actual amount of regularization (alpha_reg).
 
 The value of θ is computed by dividing alpha_reg by alpha_var.
 
@@ -85,7 +85,8 @@ if (np.array_equal(X, iris.data) and np.array_equal(y,iris.target)):
 
 But this condition is not relevant as the code is based on the LassoLars
 implementation, which already benefits from an exception for the test used in
-[estimator.py](https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/utils/estimator_checks.py) (line 2664) on scikit-learn.
+[estimator.py](https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/utils/estimator_checks.py)
+(line 2664) on scikit-learn.
 
 Thus those lines will have to be deleted as soon as the project is moved to scikit-learn
 (and the test is updated) to avoid any useless computational cost.
