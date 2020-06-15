@@ -4,9 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LassoLars, LassoLarsCV, LinearRegression
 from sklearn.utils._testing import assert_array_almost_equal
-# from sklearn.utils._testing import assert_array_equal
 from sklearn.utils._testing import assert_almost_equal
-# from sklearn.utils._testing import assert_raises
 from sklearn.model_selection import KFold
 from sklearn.datasets import make_regression
 
@@ -104,7 +102,7 @@ def test_theta_equal_0(fit_path):
 
 
 @pytest.mark.parametrize("fit_path", [True, False])
-@pytest.mark.parametrize("theta", [1.0, 0.5, .1, .01])
+@pytest.mark.parametrize("theta", [1.0, 0.5, .1])
 def test_simple_vs_refined_algorithm(theta, fit_path):
     # Test the consistency of the results between the 2 versions of
     # the algorithm.
@@ -163,10 +161,12 @@ def test_relaxed_lasso_lars():
     assert relasso.score(X2, y2) > 0.9
 
 
+@pytest.mark.parametrize("theta", [1, .5])
 @pytest.mark.parametrize("X, y", [(X, y), (Xa, ya), (Xb, yb)])
-def test_shapes(X, y):
+def test_shapes(X, y, theta):
     # Test shape of attributes.
-    relasso = RelaxedLassoLars()
+    alpha = .5
+    relasso = RelaxedLassoLars(alpha, theta)
     relasso.fit(X, y)
 
     # Multi-targets
@@ -177,9 +177,13 @@ def test_shapes(X, y):
         assert relasso.coef_.shape == (y.shape[1], X.shape[1])
         assert len(relasso.coef_path_) == y.shape[1]
         if len(relasso.alphas_[0]) > 1:
-            assert relasso.coef_path_[0].shape == (X.shape[1],
-                                                   n_alphas,
-                                                   n_alphas - 1)
+            if theta == 1:
+                assert relasso.coef_path_[0].shape == (X.shape[1],
+                                                       n_alphas,
+                                                       n_alphas - 1)
+            else:
+                assert relasso.coef_path_[0].shape[1] > \
+                       relasso.coef_path_[0].shape[2]
         else:
             assert relasso.coef_path_[0].shape == (X.shape[1], 1, 1)
         assert relasso.intercept_.shape == (y.shape[1],)
@@ -191,9 +195,13 @@ def test_shapes(X, y):
         assert relasso.alphas_.shape == (n_alphas,)
         assert relasso.coef_.shape == (X.shape[1],)
         if len(relasso.alphas_) > 1:
-            assert relasso.coef_path_.shape == (X.shape[1],
-                                                n_alphas,
-                                                n_alphas - 1)
+            if theta == 1:
+                assert relasso.coef_path_.shape == (X.shape[1],
+                                                    n_alphas,
+                                                    n_alphas - 1)
+            else:
+                assert relasso.coef_path_.shape[1] > \
+                       relasso.coef_path_.shape[2]
         else:
             assert relasso.coef_path_.shape == (X.shape[1], 1, 1)
 
