@@ -227,7 +227,7 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
 
     # Get lars path
     alphas, active, coefs, n_iter = lars_path(
-                            X, y, Xy=Xy, Gram=Gram, max_iter=max_iter,
+                            X_copy, y, Xy=Xy, Gram=Gram, max_iter=max_iter,
                             alpha_min=alpha_reg_min_, method=method,
                             copy_X=copy_X, eps=eps, copy_Gram=copy_Gram,
                             verbose=verbose, return_path=True,
@@ -270,8 +270,9 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
                 # If intercept and coef sign dont match, sign crossing happens
                 if np.sign(y_coef[0]) * np.sign(equation[1]) < 0:
                     alpha_crossing = -equation[1]/equation[0]
-                    fast_extrapolation[i] = 0
-                    min_alphas_reg[i] = alphas[alphas >= alpha_crossing][-1]
+                    if alpha_crossing > alpha_reg_min_:
+                        fast_extrapolation[i] = 0
+                        min_alphas_reg[i] = alphas[alphas >= alpha_crossing][-1]
 
         # Initiate our 3D coefs tensor
         relasso_coefs = np.empty((nb_features, nb_alphas, nb_alphas-1))
@@ -292,7 +293,7 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
                 # Start with the simple part, before zero crossing
                 min_alpha_reg = min_alphas_reg[i]
                 # alphas_reg for interpolation
-                alphas_reg_interp = interp_alphas[interp_alphas >=
+                alphas_reg_interp = interp_alphas[interp_alphas >
                                                   min_alpha_reg]
                 interpolated = interpolator(alphas_reg_interp)
                 relasso_coefs[:,
@@ -300,31 +301,36 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
                               i] = interpolated.T
 
                 # Compute coefs for the remaining alpha_reg
-                _, _, coef1, _ = lars_path(X_copy, y, Xy=Xy,
-                                           Gram=Gram,
-                                           max_iter=max_iter,
-                                           alpha_min=alphas[i+1],
-                                           method='lasso',
-                                           copy_X=copy_X,
-                                           eps=eps,
-                                           copy_Gram=copy_Gram,
-                                           verbose=verbose,
-                                           return_path=False,
-                                           return_n_iter=True)
-                sparse_X = X_copy.copy()
-                sparse_X[:, coef1 == 0] = 0
+                X_copy = X.copy()
+                _, _, coef1 = lars_path(X_copy, y, Xy=Xy,
+                                        Gram=Gram,
+                                        max_iter=max_iter,
+                                        alpha_min=alphas[i+1],
+                                        method='lasso',
+                                        copy_X=copy_X,
+                                        eps=eps,
+                                        copy_Gram=copy_Gram,
+                                        verbose=verbose,
+                                        return_path=True,
+                                        return_n_iter=False)
+                sparse_X = X.copy()
+                mask = np.all(np.isclose(coef1[:, -2:].T,
+                                         np.zeros((2, nb_features))),
+                              axis=0)
+                sparse_X[:, mask] = 0
                 for j in range(i+len(alphas_reg_interp), nb_alphas):
-                    _, _, coef2, _ = lars_path(sparse_X, y, Xy=Xy,
-                                               Gram=Gram,
-                                               max_iter=max_iter,
-                                               alpha_min=alphas[i+1],
-                                               method='lasso',
-                                               copy_X=copy_X,
-                                               eps=eps,
-                                               copy_Gram=copy_Gram,
-                                               verbose=verbose,
-                                               return_path=False,
-                                               return_n_iter=True)
+                    sparse_X_copy = sparse_X.copy()
+                    _, _, coef2 = lars_path(sparse_X_copy, y, Xy=Xy,
+                                            Gram=Gram,
+                                            max_iter=max_iter,
+                                            alpha_min=alphas[j],
+                                            method='lasso',
+                                            copy_X=copy_X,
+                                            eps=eps,
+                                            copy_Gram=copy_Gram,
+                                            verbose=verbose,
+                                            return_path=False,
+                                            return_n_iter=False)
                     relasso_coefs[:, j, i] = coef2
 
         # Set min value for alpha used for variable selection
