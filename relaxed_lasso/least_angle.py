@@ -82,20 +82,21 @@ def _relassolars_path_residues(X_train, y_train, X_test, y_test,
 
     Returns
     -------
-    alphas : array, shape (n_alphas,)
+    alphas : array, shape (n_alphas_var,)
         Maximum of covariances (in absolute value) at each iteration.
         ``n_alphas`` is either ``max_iter`` or ``n_features``, whichever
-        is smaller.
+        is smaller. Corresponds to alpha_var, i.e. alphas used for variables
+        selection
 
     active : list
         Indices of active variables at the end of the path.
 
-    coefs : array, shape (n_features, n_alphas, n_alphas-1)
+    coefs : array, shape (n_features, n_alphas_reg, n_alphas_var)
         Dim 0 are coefficients along the path given non zero
         variables defined by Dim 2 when applying relaxed
         regularization defined by Dim 1
 
-    residues : array, shape (n_alphas, n_samples, n_alphas-1)
+    residues : array, shape (n_alphas_reg, n_samples, n_alphas_var)
         Dim 1 are residues of the prediction on the test data
         along the path given non zero variables defined by Dim 2
         when applying relaxed regularization defined by Dim 0
@@ -200,15 +201,16 @@ def relasso_lars_path(X, y, Xy=None, Gram=None, max_iter=500, alpha_min=0,
 
     Returns
     -------
-    alphas : array, shape (n_alphas,)
+    alphas : array, shape (n_alphas_var,)
         Maximum of covariances (in absolute value) at each iteration.
         ``n_alphas`` is either ``max_iter`` or ``n_features``, whichever
-        is smaller.
+        is smaller. Corresponds to alpha_var, i.e. alphas used for variables
+        selection
 
     active : list
         Indices of active variables at the end of the path.
 
-    coefs : array, shape (n_features, n_alphas, n_alphas-1)
+    coefs : array, shape (n_features, n_alphas_reg, n_alphas_var)
         Dim 0 are coefficients along the path given non zero
         variables defined by Dim 2 when applying relaxed
         regularization defined by Dim 1
@@ -426,16 +428,17 @@ class RelaxedLassoLars(MultiOutputMixin, RegressorMixin, LinearModel):
 
     Attributes
     ----------
-    alphas_ : array, shape (n_alphas,) | list of n_targets such arrays
+    alphas_ : array, shape (n_alphas_var,) | list of n_targets such arrays
         Maximum of covariances (in absolute value) at each iteration.
         ``n_alphas`` is either ``max_iter``, ``n_features``, or the number of
         nodes in the path with correlation greater than ``alpha``, whichever
-        is smaller.
+        is smaller. Corresponds to alpha_var, i.e. alphas used for variables
+        selection
 
     active_ : list | list of n_targets such lists
         Indices of active variables at the end of the path.
 
-    coef_path_ : array, shape (n_features, n_alphas, n_alphas - 1)
+    coef_path_ : array, shape (n_features, n_alphas_reg, n_alphas_var)
         | list of n_targets such arrays
         The varying values of the coefficients along the path. It is not
         present if the ``fit_path`` parameter is ``False``.
@@ -671,20 +674,22 @@ class RelaxedLassoLarsCV(RelaxedLassoLars):
     intercept_ : float
         independent term in decision function.
 
-    coef_path_ : array, shape (n_features, n_alphas, n_alphas - 1)
+    coef_path_ : array, shape (n_features, n_alphas_reg, n_alphas_var)
         the varying values of the coefficients along the path
 
     alpha_ : float
-        the estimated regularization parameter alpha
+        the estimated regularization parameter alpha (for variable selection)
+        Corresponds to alpha_var, i.e. alphas used for variables selection
 
     theta_ : float
-        the estimated regularization parameter theta
+        the estimated regularization parameter theta (for relaxation)
 
     alphas_ : array, shape (n_alphas,)
         the different values of alpha along the path
 
     cv_alphas_ : array, shape (n_cv_alphas,)
         all the values of alpha along the path for the different folds
+        Corresponds to alpha_var, i.e. alphas used for variables selection
 
     mse_path_ : array, shape (n_folds, n_cv_alphas)
         the mean square error on left-out for each fold along the path
