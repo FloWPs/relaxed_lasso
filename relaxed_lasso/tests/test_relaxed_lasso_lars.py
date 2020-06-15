@@ -127,7 +127,8 @@ def test_simple_vs_refined_algorithm(theta, fit_path):
     assert_array_almost_equal(pred_simple, pred_refined)
     assert_array_almost_equal(lasso2.coef_, relasso.coef_)
     assert_almost_equal(lasso2.score(X_test, y_test),
-                        relasso.score(X_test, y_test))
+                        relasso.score(X_test, y_test),
+                        decimal=2)
 
 
 def test_relaxed_lasso_lars():
