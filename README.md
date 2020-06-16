@@ -48,7 +48,7 @@ implementation of lasso.
 
 There are two algorithms implemented in scikit-learn to get the lasso_path:
 * least angle regression (LARS) : this is the one used in this implementation
-* coordinate ascent : not implemented
+* coordinate descent : not implemented
 
 For pros and cons of each algorithm, see the [lasso documentation](https://scikit-learn.org/stable/modules/linear_model.html#least-angle-regression)
 
