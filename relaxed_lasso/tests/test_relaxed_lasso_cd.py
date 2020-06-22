@@ -215,16 +215,16 @@ def test_no_path_precomputed():
     assert alpha_ == alphas_[-1]
 
 
-def test_no_path_all_precomputed():
-    # Test that the 'return_path=False' option with Gram and Xy
-    # remains correct.
-    Xy = np.dot(X.T, y)
-
-    alphas_, coef_path_, _ = relasso_path(
-        X, y, precompute=True, Xy=Xy)
-    alpha_, coef, _ = relasso_path(
-        X, y, precompute=True, Xy=Xy, return_path=False)
-
-    assert_array_almost_equal(coef, coef_path_[:, -1, -1])
-
-    assert alpha_ == alphas_[-1]
+# def test_no_path_all_precomputed():
+#    # Test that the 'return_path=False' option with Gram and Xy
+#    # remains correct.
+#    Xy = np.dot(X.T, y)
+#
+#    alphas_, coef_path_, _ = relasso_path(
+#        X, y, precompute=True, Xy=Xy)
+#    alpha_, coef, _ = relasso_path(
+#        X, y, precompute=True, Xy=Xy, return_path=False)
+#
+#    assert_array_almost_equal(coef, coef_path_[:, -1, -1])
+#
+#    assert alpha_ == alphas_[-1]
