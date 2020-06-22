@@ -49,7 +49,7 @@ Implementation
 ==============
 
 - The implementation in the class RelaxedLassoLars uses least-angle regression (LARS)
-as the algorithm to fit the coefficients.
+  as the algorithm to fit the coefficients.
 - The implementation in the class RelaxedLasso uses the coordinate descent to fit the coefficients.
 
 Algorithm
