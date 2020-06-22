@@ -8,7 +8,6 @@ The ``RelaxedLassoLars`` class
     :inherited-members:
     :show-inheritance:
 
-
 The ``RelaxedLassoLarsCV`` class
 ********************************
 .. autoclass:: relaxed_lasso.RelaxedLassoLarsCV
@@ -22,7 +21,6 @@ The ``RelaxedLasso`` class
     :members:
     :inherited-members:
     :show-inheritance:
-
 
 The ``RelaxedLassoCV`` class
 ********************************
