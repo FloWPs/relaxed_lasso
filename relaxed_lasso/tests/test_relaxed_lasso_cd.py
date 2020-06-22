@@ -207,10 +207,10 @@ def test_no_path():
 def test_no_path_precomputed():
     # Test that the 'return_path=False' option with Gram remains correct.
     alphas_, coef_path_, _ = relasso_path(
-        X, y, precompute=True)
+        X, y, alphas=[1, 0.5], precompute=True)
     alpha_, coef, _ = relasso_path(
-        X, y, precompute=True, return_path=False)
-
+        X, y, alphas=[1, 0.5], precompute=True, return_path=False)
+    
     assert_array_almost_equal(coef, coef_path_[:, -1, -1])
     assert alpha_ == alphas_[-1]
 
