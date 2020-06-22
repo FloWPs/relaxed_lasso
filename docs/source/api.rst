@@ -15,3 +15,18 @@ The ``RelaxedLassoLarsCV`` class
     :members:
     :inherited-members:
     :show-inheritance:
+
+The ``RelaxedLasso`` class
+******************************
+.. autoclass:: relaxed_lasso.RelaxedLasso
+    :members:
+    :inherited-members:
+    :show-inheritance:
+
+
+The ``RelaxedLassoCV`` class
+********************************
+.. autoclass:: relaxed_lasso.RelaxedLassoCV
+    :members:
+    :inherited-members:
+    :show-inheritance:
