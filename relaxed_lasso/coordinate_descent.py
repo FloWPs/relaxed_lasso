@@ -19,7 +19,6 @@ from sklearn.model_selection import check_cv
 from joblib import Parallel, delayed
 from scipy import interpolate
 from sklearn.utils.validation import _deprecate_positional_args
-from sklearn.utils.validation import check_array
 
 
 def _check_copy_and_writeable(array, copy=False):
@@ -56,7 +55,7 @@ def _alpha_grid(X, y, Xy=None, l1_ratio=1.0, fit_intercept=True,
         ``alpha_min / alpha_max = 1e-13``
 
     n_alphas : int, default=100
-        Number of alphas along the regularization path
+        Number of alphas_var along the regularization path
 
     fit_intercept : bool, default=True
         Whether to fit an intercept or not
@@ -108,7 +107,7 @@ def _alpha_grid(X, y, Xy=None, l1_ratio=1.0, fit_intercept=True,
             Xy -= mean_dot[:, np.newaxis]
         if normalize:
             Xy /= X_scale[:, np.newaxis]
-    
+
     # Smallest alpha such that all the coefficients are zero
     alpha_max = (np.sqrt(np.sum(Xy ** 2, axis=1)).max() /
                  (n_samples * l1_ratio))
@@ -117,16 +116,17 @@ def _alpha_grid(X, y, Xy=None, l1_ratio=1.0, fit_intercept=True,
         alphas = np.empty(n_alphas)
         alphas.fill(np.finfo(float).resolution)
         return alphas
-    
-    alphas = np.logspace(np.log10(alpha_max * eps), 1, num=n_alphas)[::-1]
-    alphas[0] = alpha_max
 
-    return alphas
+    alphas = np.logspace(np.log10(alpha_max * eps), 1, num=n_alphas)
+    alphas[-1] = alpha_max
+
+    return sorted(alphas, reverse=True)
+
 
 def _relasso_path_residues(X_train, y_train, X_test, y_test,
                            copy=True, verbose=False, max_iter=1000,
                            fit_intercept=True, normalize=False,
-                           eps=1e-3, n_alphas=20, alphas=None):
+                           eps=1e-13, n_alphas=100, alphas=None):
     """Compute the residues on left-out data for a full lasso path.
     Parameters
     ----------
@@ -181,20 +181,21 @@ def _relasso_path_residues(X_train, y_train, X_test, y_test,
 
     Returns
     -------
-    alphas : array, shape (n_alphas,)
+    alphas : array, shape (n_alphas_var,)
         Maximum of covariances (in absolute value) at each iteration.
         ``n_alphas`` is either ``max_iter`` or ``n_features``, whichever
-        is smaller.
+        is smaller. Corresponds to alpha_var, i.e. alphas used for variables
+        selection
 
-    coefs : array, shape (n_features, n_alphas, n_alphas-1)
+    coefs : array, shape (n_features, n_alphas_reg, n_alphas_var)
         Dim 0 are coefficients along the path given non zero
         variables defined by Dim 2 when applying relaxed
         regularization defined by Dim 1
 
-    dual_gaps : ndarray of shape (n_alphas,)
+    dual_gaps : array, shape (n_alphas_var,)
         The dual gaps at the end of the optimization for each alpha.
 
-    residues : array, shape (n_alphas, n_samples, n_alphas-1)
+    residues : array, shape (n_alphas_reg, n_samples, n_alphas_var)
         Dim 1 are residues of the prediction on the test data
         along the path given non zero variables defined by Dim 2
         when applying relaxed regularization defined by Dim 0
@@ -237,12 +238,12 @@ def _relasso_path_residues(X_train, y_train, X_test, y_test,
     return alphas, coefs, dual_gaps, residues
 
 
-def relasso_path(X, y, eps=1e-3, alpha_min=0,
+def relasso_path(X, y, eps=1e-13, alpha_min=0,
                  theta_min=1, precompute='auto', Xy=None,
                  copy_X=True, coef_init=None, verbose=False,
                  return_n_iter=False, positive=False,
                  return_path=True, n_alphas=100, alphas=None):
-    """Compute Relaxed Lasso path with coordinate descent.
+    """Compute Relaxed Lasso path with Coordinate Descent.
 
     Parameters
     ----------
@@ -260,13 +261,13 @@ def relasso_path(X, y, eps=1e-3, alpha_min=0,
         regularization parameter alpha parameter in the Lasso.
         Used for variable selection only in the case of Relaxed Lasso
 
-    theta_min : float, optional (default=0)
+    theta_min : float, optional (default=1)
         Factor by which the regularization applied to subset of variables
         selected by parameter alpha_min must by relaxed
 
-    eps : float, default=1e-3
-        Length of the path. ``eps=1e-3`` means that
-        ``alpha_min / alpha_max = 1e-3``
+    eps : float, default=1e-13
+        Length of the path. ``eps=1e-13`` means that
+        ``alpha_min / alpha_max = 1e-13``
 
     n_alphas : int, default=100
         Number of alphas along the regularization path
@@ -308,15 +309,18 @@ def relasso_path(X, y, eps=1e-3, alpha_min=0,
 
     Returns
     -------
-    alphas : ndarray of shape (n_alphas,)
-        The alphas along the path where models are computed.
+    alphas : array, shape (n_alphas_var,)
+        Maximum of covariances (in absolute value) at each iteration.
+        ``n_alphas`` is either ``max_iter`` or ``n_features``, whichever
+        is smaller. Corresponds to alpha_var, i.e. alphas used for variables
+        selection
 
-    coefs : array, shape (n_features, n_alphas, n_alphas-1)
+    coefs : array, shape (n_features, n_alphas_reg, n_alphas_var)
         Dim 0 are coefficients along the path given non zero
         variables defined by Dim 2 when applying relaxed
         regularization defined by Dim 1
 
-    dual_gaps : ndarray of shape (n_alphas,)
+    dual_gaps : array, shape (n_alphas_var,)
         The dual gaps at the end of the optimization for each alpha.
 
     n_iters : list of int
@@ -489,7 +493,7 @@ class RelaxedLasso(ElasticNet):
     theta: float, default=1.0
         Constant that relaxes the regularization parameter alpha.
         Value is between 0 and 1
-        ``theta = 1`` is equivalent to LassoLars with regularization alpha
+        ``theta = 1`` is equivalent to Lasso with regularization alpha
         ``theta = 0`` is equivalent to an ordinary least square, solved
         by :class:`LinearRegression`, applied to a subset of variables
         that was selected by LassoLars with regularization parameter alpha
@@ -555,8 +559,20 @@ class RelaxedLasso(ElasticNet):
 
     Attributes
     ----------
-    coef_ : ndarray of shape (n_features,) or (n_targets, n_features)
-        parameter vector (w in the cost function formula)
+    alphas_ : array, shape (n_alphas_var,) | list of n_targets such arrays
+    Maximum of covariances (in absolute value) at each iteration.
+    ``n_alphas`` is either ``max_iter``, ``n_features``, or the number of
+    nodes in the path with correlation greater than ``alpha``, whichever
+    is smaller. Corresponds to alpha_var, i.e. alphas used for variables
+    selection
+
+    coefs_ : array, shape (n_features, n_alphas_reg, n_alphas_var)
+        Dim 0 are coefficients along the path given non zero
+        variables defined by Dim 2 when applying relaxed
+        regularization defined by Dim 1
+
+    dual_gaps_ : array, shape (n_alphas_var,)
+        The dual gaps at the end of the optimization for each alpha.
 
     sparse_coef_ : sparse matrix of shape (n_features, 1) or \
             (n_targets, n_features)
@@ -623,16 +639,16 @@ class RelaxedLasso(ElasticNet):
         n_targets = y.shape[1]
 
         self.alphas_ = []
-        self.n_iter_ = []
         self.coef_ = np.empty((n_targets, n_features))
         self.dual_gaps_ = []
+        self.n_iter_ = []
 
         X_copy = X.copy()
         for k in range(n_targets):
             this_Xy = None if Xy is None else Xy[:, k]
             # Model selection
             alphas, coefs, dual_gaps, n_iter = lasso_path(
-                 X_copy, y[:, k], eps=self.eps,
+                 X, y[:, k], eps=self.eps,
                  n_alphas=None, alphas=[alpha],
                  precompute=self.precompute, Xy=this_Xy,
                  copy_X=self.copy_X, coef_init=None,
@@ -703,7 +719,7 @@ class RelaxedLasso(ElasticNet):
 
 
 class RelaxedLassoCV(RelaxedLasso):
-    """Cross-validated Relaxed Lasso, using the LARS algorithm.
+    """Cross-validated Relaxed Lasso, using the Coordinate Descent algorithm.
 
     Parameters
     ----------
@@ -771,7 +787,7 @@ class RelaxedLassoCV(RelaxedLasso):
     intercept_ : float
         independent term in decision function.
 
-    coef_path_ : array, shape (n_features, n_alphas)
+    coef_path_ : array, shape (n_features, n_alphas_reg, n_alphas_var)
         the varying values of the coefficients along the path
 
     alpha_ : float
@@ -785,6 +801,7 @@ class RelaxedLassoCV(RelaxedLasso):
 
     cv_alphas_ : array, shape (n_cv_alphas,)
         all the values of alpha along the path for the different folds
+        Corresponds to alpha_var, i.e. alphas used for variables selection
 
     mse_path_ : array, shape (n_folds, n_cv_alphas)
         the mean square error on left-out for each fold along the path
@@ -792,20 +809,6 @@ class RelaxedLassoCV(RelaxedLasso):
 
     n_iter_ : array-like or int
         the number of iterations run by Lars with the optimal alpha.
-    Examples
-    --------
-    >>> from relaxed_lasso import RelaxedLassoCV
-    >>> from sklearn.datasets import make_regression
-    >>> X, y = make_regression(noise=4.0, random_state=0)
-    >>> relasso = RelaxedLassoCV(cv=5).fit(X, y)
-    >>> relasso.score(X, y)
-    0.9991...
-    >>> relasso.alpha_
-    0.3724...
-    >>> relasso.theta_
-    4.1115...e-13
-    >>> relasso.predict(X[:1,])
-    array([[-78.3854...]])
 
     """
 
@@ -860,7 +863,7 @@ class RelaxedLassoCV(RelaxedLasso):
                 raise ValueError("n_alphas should be strictly positive.")
             # Set values of alpha for regularization
             alphas = _alpha_grid(X, y, l1_ratio=1, n_alphas=self.n_alphas,
-                                  eps=self.eps)
+                                 eps=self.eps)
         else:
             alphas = self.alphas
 
