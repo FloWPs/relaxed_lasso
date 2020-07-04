@@ -632,7 +632,7 @@ class RelaxedLasso(ElasticNet):
             this_Xy = None if Xy is None else Xy[:, k]
             # Model selection
             alphas, coefs, dual_gaps, n_iter = lasso_path(
-                 X_copy, y[:, k], eps=self.eps,
+                 X, y[:, k], eps=self.eps,
                  n_alphas=None, alphas=[alpha],
                  precompute=self.precompute, Xy=this_Xy,
                  copy_X=self.copy_X, coef_init=None,
